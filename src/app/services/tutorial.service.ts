@@ -3,7 +3,7 @@ import { Tutorial } from '../models/tutorial.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-const baseurl = 'http://localhost:8080/api/tutorials';
+const baseurl = 'http://localhost:5090/api/student';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class TutorialService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Tutorial[]> {
-    return this.http.get<Tutorial[]>(baseurl);
+    return this.http.get<Tutorial[]>(`${baseurl}`);
   }
 
   get(id: Number): Observable<Tutorial> {
@@ -33,5 +33,9 @@ export class TutorialService {
 
   deleteAll(): Observable<Tutorial> {
     return this.http.delete<Tutorial>(baseurl);
+  }
+
+  findByTitle(title: any): Observable<Tutorial[]> {
+    return this.http.get<Tutorial[]>(`${baseurl}/Search?title=${title}`);
   }
 }
