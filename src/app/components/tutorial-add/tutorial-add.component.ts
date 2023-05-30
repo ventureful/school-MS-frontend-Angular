@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Tutorial } from 'src/app/models/tutorial.model';
+import { Router } from '@angular/router';
+import { Gender, Tutorial } from 'src/app/models/tutorial.model';
 import { TutorialService } from 'src/app/services/tutorial.service';
 
 @Component({
@@ -9,20 +10,32 @@ import { TutorialService } from 'src/app/services/tutorial.service';
 })
 export class TutorialAddComponent {
   tutorial: Tutorial = {
-    title: '',
-    description: '',
-    published: false,
+    studentName: '',
+    studentGender: Gender.Male,
+    studentTitle: '',
+    studentDescription: '',
   };
+  genderlist = [
+    { id: Gender.Male, name: 'Male' },
+    { id: Gender.Female, name: 'Female' },
+  ];
+  genderObj: any;
   submitted: boolean = false;
 
-  constructor(private tutorialService: TutorialService) {
+  constructor(
+    private tutorialService: TutorialService,
+    private router: Router
+  ) {
     console.log(tutorialService);
+    console.log(router);
   }
 
   saveTutorial(): void {
     const data = {
-      title: this.tutorial.title,
-      description: this.tutorial.description,
+      studentName: this.tutorial.studentName,
+      studentGender: this.tutorial.studentGender,
+      studentTitle: this.tutorial.studentTitle,
+      studentDescription: this.tutorial.studentDescription,
     };
 
     this.tutorialService.create(data).subscribe({
@@ -32,14 +45,24 @@ export class TutorialAddComponent {
       },
       error: (e) => console.log(e),
     });
+    // this.router.navigate(['/tutorials']);
   }
 
   newTutorial(): void {
     this.submitted = false;
     this.tutorial = {
-      title: '',
-      description: '',
-      published: false,
+      studentName: '',
+      studentGender: Gender.Male,
+      studentTitle: '',
+      studentDescription: '',
     };
+    this.genderlist = [
+      { id: Gender.Male, name: 'Male' },
+      { id: Gender.Female, name: 'Female' },
+    ];
+  }
+
+  getSelectedGender(): void {
+    console.log(this.tutorial.studentGender);
   }
 }
